@@ -1,0 +1,36 @@
+{% extends "default.html" %}
+{% load static %}
+{% load my_filters %}
+
+{% block content %}
+  <h1>News List</h1>
+  <p>Total news: {{ news_count }}</p>
+  <ul>
+    {% for item in news %}
+      <li>
+        <h2><a href="{% url 'news_detail' item.pk %}">{{ item.title }}</a></h2>
+        <p>{{ item.created_at|date:"d.m.Y" }}</p>
+        <p>{{ item.text|truncatewords:20 }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+  <div>
+    {% if is_paginated %}
+      <div>
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

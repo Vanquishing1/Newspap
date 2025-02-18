@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<h2>Поиск новостей</h2>
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Искать</button>
+</form>
+
+<h3>Результаты поиска</h3>
+<ul>
+    {% for post in news %}
+        <li><a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a> ({{ post.created_at }})</li>
+    {% empty %}
+        <p>Новостей не найдено.</p>
+    {% endfor %}
+</ul>
+
+{% include 'news/pagination.html' %}
+
+{% endblock %}
