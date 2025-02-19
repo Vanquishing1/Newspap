@@ -22,4 +22,5 @@ urlpatterns = [
    path('admin/', admin.site.urls),
    path('', lambda request: redirect('news_list', permanent=True)),
    path('news/', include('news.urls')),
+   path('accounts/', include('allauth.urls')),
 ]

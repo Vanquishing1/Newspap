@@ -5,6 +5,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class NewsListView(ListView):
     model = Post
@@ -70,3 +71,9 @@ class ArticleDeleteView(DeleteView):
     model = Post
     template_name = 'news/news_confirm_delete.html'
     success_url = reverse_lazy('news_list')
+
+class PostCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'news.add_post'
+
+class PostUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'news.change_post'

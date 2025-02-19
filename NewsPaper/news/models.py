@@ -68,3 +68,13 @@ class News(models.Model):
     author = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def set_authors_permissions(cls):
+        from django.contrib.auth.models import Group, Permission
+        from django.contrib.contenttypes.models import ContentType
+        content_type = ContentType.objects.get_for_model(cls)
+        authors_group, _ = Group.objects.get_or_create(name='authors')
+        permissions = Permission.objects.filter(content_type=content_type, codename__in=['add_post', 'change_post'])
+        authors_group.permissions.set(permissions)
+
+
